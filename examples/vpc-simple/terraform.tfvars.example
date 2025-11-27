@@ -1,0 +1,29 @@
+################################################################################
+# General
+################################################################################
+
+region = "eu-central-1"
+
+################################################################################
+# VPCs
+################################################################################
+
+vpcs = {
+  "my-vpc" = {
+    environment                                      = "dev"                 # Required
+    create_vpc                                       = true                  # Optional - default: true
+    cidr_block                                       = "10.0.0.0/16"         # Required when create_vpc = true
+    enable_dns_support                               = true                  # Optional - default: true
+    enable_dns_hostnames                             = true                  # Optional - default: true
+    create_igw                                       = true                  # Optional - default: true
+    enable_flow_logs                                 = false                 # Optional - default: false
+    flow_logs_destination_type                       = "cloud-watch-logs"    # Optional - default: "cloud-watch-logs"
+    create_flow_logs_cloudwatch_log_group            = true                  # Optional - default: true
+    flow_logs_cloudwatch_log_group_retention_in_days = 30                    # Optional - default: 30
+    create_flow_logs_iam_role                        = true                  # Optional - default: true
+    tags = {                                                                 # Optional - default: {}
+      Project = "my-project"
+      Owner   = "my-team"
+    }
+  }
+}
