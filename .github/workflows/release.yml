@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v4.3.1
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: |
+            ## What's Changed
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ## Usage
+
+            ```hcl
+            module "vpc" {
+              source = "github.com/gebalamariusz/hait-terraform-modules//modules/vpc?ref=${{ github.ref_name }}"
+
+              name       = "my-app"
+              cidr_block = "10.0.0.0/16"
+            }
+            ```
+
+            ## Documentation
+
+            See [modules/vpc/README.md](https://github.com/gebalamariusz/hait-terraform-modules/blob/${{ github.ref_name }}/modules/vpc/README.md) for full documentation.
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
