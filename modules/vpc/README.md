@@ -143,8 +143,8 @@ This is useful for:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| name | Name prefix for all resources | `string` | n/a | yes |
-| environment | Environment (dev/staging/prod) | `string` | n/a | yes |
+| name | Name for VPC and prefix for related resources | `string` | n/a | yes |
+| environment | Environment name (used in naming/tagging if provided) | `string` | `""` | no |
 | tags | Additional tags for all resources | `map(string)` | `{}` | no |
 
 ### VPC
@@ -221,7 +221,6 @@ This is useful for:
 
 The module includes input validation:
 
-- `environment` must be one of: dev, staging, prod
 - `vpc_id` must be a valid VPC ID format (vpc-*)
 - `cidr_block` must be a valid IPv4 CIDR block
 - `secondary_cidr_blocks` must all be valid IPv4 CIDR blocks

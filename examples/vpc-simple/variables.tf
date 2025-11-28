@@ -15,7 +15,7 @@ variable "region" {
 #
 #   vpcs = {
 #     "my-vpc" = {
-#       environment                                      = "dev"              # required: dev, staging, prod
+#       environment                                      = "dev"              # optional: used in naming/tagging
 #       create_vpc                                       = true               # default: true
 #       cidr_block                                       = "10.0.0.0/16"      # required when create_vpc = true
 #       secondary_cidr_blocks                            = ["10.1.0.0/16"]    # default: []
@@ -35,7 +35,6 @@ variable "region" {
 #
 #   vpcs = {
 #     "existing-vpc" = {
-#       environment      = "prod"
 #       create_vpc       = false
 #       vpc_id           = "vpc-1234567890abcdef0"
 #       enable_flow_logs = true
@@ -47,7 +46,7 @@ variable "region" {
 variable "vpcs" {
   description = "Map of VPC configurations"
   type = map(object({
-    environment                                      = string
+    environment                                      = optional(string, "")
     create_vpc                                       = optional(bool, true)
     vpc_id                                           = optional(string, "")
     cidr_block                                       = optional(string, "")

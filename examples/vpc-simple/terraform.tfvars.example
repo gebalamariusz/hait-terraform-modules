@@ -10,7 +10,7 @@ region = "eu-central-1"
 
 vpcs = {
   "my-vpc" = {
-    environment                                      = "dev"                 # Required
+    environment                                      = "dev"                 # Optional - used in naming/tagging
     create_vpc                                       = true                  # Optional - default: true
     cidr_block                                       = "10.0.0.0/16"         # Required when create_vpc = true
     enable_dns_support                               = true                  # Optional - default: true

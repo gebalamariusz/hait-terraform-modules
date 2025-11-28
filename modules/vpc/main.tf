@@ -3,15 +3,14 @@
 ################################################################################
 
 locals {
-  name_prefix = "${var.name}-${var.environment}"
+  name_prefix = var.environment != "" ? "${var.name}-${var.environment}" : var.name
 
   common_tags = merge(
     {
-      Name        = local.name_prefix
-      Environment = var.environment
-      ManagedBy   = "terraform"
-      Module      = "vpc"
+      ManagedBy = "terraform"
+      Module    = "vpc"
     },
+    var.environment != "" ? { Environment = var.environment } : {},
     var.tags
   )
 
@@ -59,7 +58,7 @@ resource "aws_vpc" "this" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${local.name_prefix}-vpc"
+      Name = var.name
     }
   )
 

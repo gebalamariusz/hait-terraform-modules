@@ -8,13 +8,9 @@ variable "name" {
 }
 
 variable "environment" {
-  description = "Environment (dev/staging/prod)"
+  description = "Environment name (e.g., dev, staging, prod). Optional - used in resource naming if provided."
   type        = string
-
-  validation {
-    condition     = contains(["dev", "staging", "prod"], var.environment)
-    error_message = "Environment must be one of: dev, staging, prod."
-  }
+  default     = ""
 }
 
 variable "tags" {
