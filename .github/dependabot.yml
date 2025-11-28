@@ -1,0 +1,39 @@
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: "ci"
+    labels:
+      - dependencies
+      - github-actions
+    open-pull-requests-limit: 5
+
+  # Terraform providers
+  - package-ecosystem: terraform
+    directory: /modules/vpc
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: "deps"
+    labels:
+      - dependencies
+      - terraform
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: terraform
+    directory: /examples/vpc-simple
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: "deps"
+    labels:
+      - dependencies
+      - terraform
+    open-pull-requests-limit: 5
