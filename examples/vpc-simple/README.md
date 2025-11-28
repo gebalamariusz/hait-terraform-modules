@@ -1,25 +1,25 @@
 # VPC Simple Example
 
-Przykład użycia modułu VPC - tworzenie nowych VPC lub referencja do istniejących.
+Example usage of the VPC module - creating new VPCs or referencing existing ones.
 
-## Szybki start
+## Quick Start
 
 ```bash
-# 1. Skopiuj przykładowy tfvars
+# 1. Copy example tfvars
 cp terraform.tfvars.example terraform.tfvars
 
-# 2. Dostosuj konfigurację
-# edytuj terraform.tfvars
+# 2. Adjust configuration
+# edit terraform.tfvars
 
-# 3. Uruchom
+# 3. Run
 terraform init
 terraform plan
 terraform apply
 ```
 
-## Scenariusze użycia
+## Usage Scenarios
 
-### 1. Nowe VPC (minimalna konfiguracja)
+### 1. New VPC (minimal configuration)
 
 ```hcl
 vpcs = {
@@ -29,13 +29,13 @@ vpcs = {
 }
 ```
 
-Tworzy VPC z:
-- Nazwa: `my-vpc`
+Creates VPC with:
+- Name: `my-vpc`
 - CIDR: `10.0.0.0/16`
 - DNS support/hostnames: enabled
-- Internet Gateway: tak
+- Internet Gateway: yes
 
-### 2. Nowe VPC z environment
+### 2. New VPC with environment
 
 ```hcl
 vpcs = {
@@ -46,14 +46,14 @@ vpcs = {
 }
 ```
 
-Tworzy VPC z:
-- Nazwa: `app-vpc`
-- Tagi: `Environment = prod`
-- Powiązane zasoby (IGW, etc.) z prefixem `app-vpc-prod-`
+Creates VPC with:
+- Name: `app-vpc`
+- Tags: `Environment = prod`
+- Related resources (IGW, etc.) prefixed with `app-vpc-prod-`
 
-### 3. Istniejące VPC (tylko referencja)
+### 3. Existing VPC (reference only)
 
-Gdy masz już VPC i chcesz tylko pobrać jego dane (outputy):
+When you already have a VPC and just want to fetch its data (outputs):
 
 ```hcl
 vpcs = {
@@ -64,7 +64,7 @@ vpcs = {
 }
 ```
 
-Zwraca outputy:
+Returns outputs:
 - `vpc_id`
 - `vpc_cidr_block`
 - `all_cidr_blocks` (primary + secondary)
@@ -72,9 +72,9 @@ Zwraca outputy:
 - `vpc_default_route_table_id`
 - `vpc_default_network_acl_id`
 
-### 4. Istniejące VPC + Flow Logs
+### 4. Existing VPC + Flow Logs
 
-Dodanie Flow Logs do istniejącego VPC:
+Add Flow Logs to an existing VPC:
 
 ```hcl
 vpcs = {
@@ -86,7 +86,7 @@ vpcs = {
 }
 ```
 
-### 5. Nowe VPC z Flow Logs do CloudWatch
+### 5. New VPC with Flow Logs to CloudWatch
 
 ```hcl
 vpcs = {
@@ -98,7 +98,7 @@ vpcs = {
 }
 ```
 
-### 6. Nowe VPC z Secondary CIDR
+### 6. New VPC with Secondary CIDR
 
 ```hcl
 vpcs = {
@@ -109,7 +109,7 @@ vpcs = {
 }
 ```
 
-### 7. Wiele VPC naraz
+### 7. Multiple VPCs at once
 
 ```hcl
 vpcs = {
@@ -128,41 +128,41 @@ vpcs = {
 }
 ```
 
-## Wszystkie opcje
+## All Options
 
-| Parametr | Opis | Default |
-|----------|------|---------|
-| `environment` | Nazwa środowiska (opcjonalnie) | `""` |
-| `create_vpc` | Tworzyć nowe VPC? | `true` |
-| `vpc_id` | ID istniejącego VPC (gdy `create_vpc = false`) | `""` |
-| `cidr_block` | CIDR dla nowego VPC | `""` |
-| `secondary_cidr_blocks` | Dodatkowe CIDR bloki | `[]` |
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `environment` | Environment name (optional) | `""` |
+| `create_vpc` | Create new VPC? | `true` |
+| `vpc_id` | Existing VPC ID (when `create_vpc = false`) | `""` |
+| `cidr_block` | CIDR for new VPC | `""` |
+| `secondary_cidr_blocks` | Additional CIDR blocks | `[]` |
 | `enable_dns_support` | DNS support | `true` |
 | `enable_dns_hostnames` | DNS hostnames | `true` |
-| `create_igw` | Tworzyć Internet Gateway? | `true` |
-| `enable_flow_logs` | Włączyć Flow Logs? | `false` |
-| `flow_logs_destination_type` | `cloud-watch-logs` lub `s3` | `cloud-watch-logs` |
-| `create_flow_logs_cloudwatch_log_group` | Tworzyć Log Group? | `true` |
-| `flow_logs_cloudwatch_log_group_retention_in_days` | Retencja logów | `30` |
-| `create_flow_logs_iam_role` | Tworzyć IAM role? | `true` |
-| `tags` | Dodatkowe tagi | `{}` |
+| `create_igw` | Create Internet Gateway? | `true` |
+| `enable_flow_logs` | Enable Flow Logs? | `false` |
+| `flow_logs_destination_type` | `cloud-watch-logs` or `s3` | `cloud-watch-logs` |
+| `create_flow_logs_cloudwatch_log_group` | Create Log Group? | `true` |
+| `flow_logs_cloudwatch_log_group_retention_in_days` | Log retention | `30` |
+| `create_flow_logs_iam_role` | Create IAM role? | `true` |
+| `tags` | Additional tags | `{}` |
 
-## Outputy
+## Outputs
 
-Po `terraform apply` dostępne są outputy dla każdego VPC:
+After `terraform apply`, outputs are available for each VPC:
 
 ```bash
-# Wszystkie outputy
+# All outputs
 terraform output
 
-# Konkretne VPC
+# Specific VPC
 terraform output -json vpcs | jq '.["my-vpc"]'
 
-# Samo vpc_id
+# Just vpc_id
 terraform output -json vpcs | jq -r '.["my-vpc"].vpc_id'
 ```
 
-Dostępne outputy per VPC:
+Available outputs per VPC:
 - `vpc_id`
 - `vpc_arn`
 - `vpc_cidr_block`
@@ -170,16 +170,16 @@ Dostępne outputy per VPC:
 - `internet_gateway_id`
 - `vpc_default_security_group_id`
 - `vpc_default_route_table_id`
-- `flow_log_id` (jeśli enabled)
-- ... i więcej
+- `flow_log_id` (if enabled)
+- ... and more
 
-## Jak znaleźć vpc_id istniejącego VPC?
+## How to find vpc_id of an existing VPC?
 
 ```bash
-# AWS CLI - lista wszystkich VPC
+# AWS CLI - list all VPCs
 aws ec2 describe-vpcs --query 'Vpcs[*].[VpcId,Tags[?Key==`Name`].Value|[0],CidrBlock]' --output table
 
-# Tylko VPC ID po nazwie
+# Get VPC ID by name
 aws ec2 describe-vpcs --filters "Name=tag:Name,Values=my-vpc-name" --query 'Vpcs[0].VpcId' --output text
 ```
 
