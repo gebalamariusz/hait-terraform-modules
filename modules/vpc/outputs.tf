@@ -14,7 +14,7 @@ output "vpc_arn" {
 
 output "vpc_cidr_block" {
   description = "The CIDR block of the VPC"
-  value       = var.create_vpc ? aws_vpc.this[0].cidr_block : data.aws_vpc.this[0].cidr_block
+  value       = local.vpc_cidr_block
 }
 
 output "vpc_main_route_table_id" {
